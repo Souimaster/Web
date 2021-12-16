@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        /* 样式 */
+        /* css初始化 */
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        ul {
+            list-style: none; /* 去掉列表样式小点 */
+        }
+        .clearfix:before, .clearfix:after { /* 清除浮动 */
+            display: table;
+            content: "";
+        }
+        .clearfix:after {
+            clear: both;
+        }
+        .clearfix {
+            *zoom: 1;
+        }                                   /* 清除浮动结束 */
+        a {
+            clear: #050505;
+            text-decoration: none;
+        }
+        input {
+            border: 0;  /* 所有的表单边框为0 */
+            box-sizing: border-box; /* css3盒子模型 border 和 padding 都包含到width 里面去 */
+        }
+        .container {
+            width: 1200px;
+            margin: 0 auto; /* 版心宽度都是1200 都要居中对齐 我们就声明一个公共类 */
+        }
+        body {
+            background-color: #f3f5f7;
+        }
+        header {
+            height: 100px; /* 嵌套块元素垂直外边距会合并 */
+            overflow: hidden; 
+            font-size: 22px;
+            /* padding-top: 30px; */ 
+            /* border-top: 1px solid; */   /* 防止外边距合并 */
+        }
+        header a {
+            color: black;
+        }
+        nav {
+            width: 1366px;
+            height: 42px;
+            margin: 26px auto; /* 盒子水平居中对齐 */
+        }
+        .logo {
+            float: left;
+            width: 255px;
+            height: 62px;
+            background: url(img/logo2.png) no-repeat 0 -2px;
+            margin-top: -10px;
+            margin-left: -155px;
+        }
+        .navbar {
+            float: left;
+            height: 42px;
+            line-height: 42px;  /* 这个行高给父亲  行高会继承 */
+            /* margin-left: 50px; */
+        }
+        .navbar li {
+            float: left;    /* 让 首页 课程 这个一行显示 */
+        }
+        .navbar li a {
+            padding: 0 10px;
+            display: block;
+            height: 42px;   /* 继承了爷爷的行高，所以可居中 */
+        }
+        .navbar li a:hover {
+            border-bottom: 2px solid #00a4ff;
+        }
+        .search {
+            width: 410px;
+            height: 38px;
+            border: 1px solid #00a4ff;
+            float: right;
+            margin-right: 30px;
+        }
+        .search input[type=text] {  /* 属性选择器  type 为 text 的文本框 */
+            width: 360px;
+            height: 38px;
+            background-color: pink;
+            padding-left: 20px; /* padding 会影响盒子的撑开 */
+            float: left;
+        }
+        /* .search input[type=text]:active {
+            background: pink;    当点击输入框时，改变背景色
+        } */
+        /* .search input[type=text]:focus {
+            background-color: pink;    当选中输入框时，改变背景色
+        } */
+        .search input[type=submit] {  /* 属性选择器  type 为 submit 的文本框 */
+            width: 50px;
+            height: 38px;
+            background-color: #00a4ff;
+            background: #00a4ff url(img/h1.png) center center;
+            background-size: cover;
+        }
+        /* 个人中心 */
+        .personal {
+            float: right;
+            margin-right: 15px;
+            height: 42px;
+            line-height: 42px;
+        }
+        .personal img {
+            margin: 0 5px;
+        }
+        /* banner start */
+        .banner {
+            height: 420px;
+        }
+        .banner-in {
+            height: 420px;
+            background: url(img/BF.jpg) no-repeat  0% 50%/100%;
+            /* background-size: cover; */
+            position: relative;
+        }
+        /* 小圆点模块 */
+        .circle {
+            width: 180px;
+            height: 20px;
+            /* background-color: pink; */
+            position: absolute;
+            bottom: 10px;
+            left: 50%;  /* 父盒子宽度一半 */
+            margin-left: -90px; /* 水平居中算法 */
+        }
+        .circle li {
+            float: left;
+            width: 12px;
+            height: 12px;
+            background-color: rgb(255,255,255,0.4);
+            margin: 4px 8px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .circle li:first-child {
+            margin-left: 10px;
+            width: 19px;
+            border-radius: 5px;
+            background-color: white;
+        }
+        /* banner end */
+        .slidebar {
+            height: 420px;
+            width: 190px;
+            background: rgba(37, 166, 199, 0.411);
+            float: left;
+        }
+        .slidebar ul a {
+            color: #fff;
+            font-size: 16px;
+            padding: 0 20px;
+            /* a是行内元素，没有大小需要转换 */
+            display: block;
+            /* height: 45px; */
+            line-height: 53px;  /* 单行垂直居中，很多情况下， 有了行高就不用给高度 */
+        }
+        .slidebar ul a:hover {
+            color: #00a4ff;
+        }
+        .slidebar a span {
+            float: right;
+            font-family: arial; /* 一般情况 符号都用这个字体 */
+        }
+        .timetable {
+            float: right;
+            width: 230px;
+            height: 300px;
+            background-color: #fff;
+            margin-top: 50px;
+        }
+        .timetable dd:last-child {  /* 结构伪类选择器 选最后一个孩子 但要求此孩子是dd */
+            border: none;
+        }
+        .timetable dt {
+            height: 50px;
+            line-height: 50px;
+            background-color: #9bceea;
+            text-align: center; /* 文字水平居中 */
+            color: #fff;
+            font-weight: 900; /* 文字加粗 */
+            letter-spacing: 2px;    /* 设置字间距 */
+            margin-bottom: 5px;
+        }
+        .timetable dt img {
+            vertical-align: middle;
+        }
+        .timetable dd {
+            width: 193px;
+            height: 60px;
+            /* background-color: purple; */
+            margin: 0 auto;
+            border-bottom: 1px solid #ccc;
+            padding-top: 14px;
+            box-sizing: border-box;
+        }
+        .timetable dd h4 {
+            font-size: 16px;
+            font-weight: normal;    /* 让粗体不粗 */
+            color: #4e4e4e;
+        } 
+        .timetable dd p {
+            color: #a5a5a5;
+            font-size: 14px;
+        }
+        .timetable dd a {
+            height: 38px;
+            border: 1px solid #00a4ff;
+            display: block;
+            text-align: center;
+            line-height: 38px;
+            color: #00a4ff;
+            font-weight: 700;
+            transition: background-color 1s,
+                color 0.5s;
+        }
+        .timetable dd a:hover {
+            color: white;
+            background-color: #00a4ff;
+        }
+        .recommend {
+            height: 60px;
+            line-height: 60px;
+            background-color: #fff;
+            margin-top: 8px;
+            box-shadow: 0 2px 2px 0px rgba(0, 0, 0, 0.2);
+            /* 盒子阴影 水平位置 垂直位置 模糊距离 影子大小 影子颜色 */
+        }
+        .recommend a {
+            padding: 0 30px;
+            border-right: 1px solid #ccc;
+            color: black;
+            font-weight: 700;
+        }
+        
+        .recommend a:first-child {
+            color: #00a4ff;
+        }
+
+        .recommend a:hover {
+            color: #00a4ff;
+        }
+        .recommend a:last-child {
+            border-right: none;
+            float: right;
+            font-size: 14px;
+        }
+        .recom-hd {
+            color: white;
+            height: 60px;
+            /* background-color: pink; */
+            margin-top: 50px;
+            box-shadow: 0 2px 2px grey;
+        }
+        .recom-hd h4 {
+            float: left;
+            color: #494949;
+            line-height: 60px;
+        }
+        .recom-hd a {
+            float:right;
+            font-size: 14px;
+            color: #a5a5a5;
+            line-height: 60px;
+            margin-right: 30px;
+
+        }
+        .recom-hd a:hover {
+            color: #00a4ff;
+        }
+
+        
+        /* 精品推荐主体部分 */
+        .recom-bd li{
+            width: 224px;
+            height: 296px;
+            background-color: white;
+            /* overflow: hidden; 里面所有溢出的内容都会被隐藏*/
+            float: left;
+            margin-top: 20px;
+            margin-right: 20px;
+            transition: all 0.2s;
+        }
+        .over {
+            overflow: hidden;
+        }
+        .recom-bd li:hover {
+            box-shadow: 0 2px 2px grey;
+            margin-top: 15px;
+        }
+        /* .c5 {
+            margin-right: 0;
+        } */
+        .c10 {
+            margin-right: 0;
+        }
+        .recom-bd li h5,
+        .recom-bd li p {
+            padding: 13px 17px 0 24px;
+            line-height: 25px;
+            margin-top: 5px;
+        }
+        .recom-bd li h5 {
+            font-size: 19px;
+            line-height: 22px;
+            font-weight: normal;
+        }
+        .recom-bd li p {
+            font-size: 17px;
+            color: #999;
+        }
+        .recom-bd p span {
+            color: #ff7c2d;
+        }
+        /* .logo a img {
+            visibility: hidden;
+        }
+        .navbar li a:hover .logo img{
+            display: inline-block;
+        } */
+        .recom-products li:nth-child(3){
+            border-radius: 10px;
+        }
+        .recom-products li:nth-child(5),
+        .recom-products li:nth-child(10){
+            margin-right: 0;
+        }
+
+        .recom-products li:nth-child(3) img {
+            visibility: hidden;
+        }
+        .recom-products li:nth-child(3):hover img {
+            visibility: visible;
+        }
+
+        /* .recom-products {
+            margin-bottom: 100px;
+        } */
+
+        /* 页面底部分 */
+        
+        .qwe {
+            padding-top: 30px;
+            height: 300px;
+            border-top: 5px solid red;
+            margin-top: 50px;
+        }
+        .footer-l {
+            float: left;
+            margin-left: 80px;
+        }
+        .footer-l p {
+
+            font-size: 17px;
+            line-height: 18px;
+            color: black;
+            margin-top: 30px;
+        }
+        .footer-l p::selection{
+            color: green;
+        }
+        .footer-l a:last-child {
+            display: block;
+            width: 120px;
+            height: 40px;
+            border: 3px solid rgb(0, 89, 255);
+            text-align: center;
+            line-height: 40px;
+            color: rgb(0, 89, 255);
+            margin-top: 30px;
+        }
+
+        .footer-r {
+            float: right;
+            font-style: normal;
+            padding-top: 12px;
+        }
+        .qwe a{
+            font-size: 18px;
+        }
+
+        .footer-r dl:first-child,
+        .footer-r dl:nth-child(2),
+        .footer-r dl:nth-child(3) {
+            float: left;
+        }
+        /* .footer-r dl:nth-child(1),
+        .footer-r dl:nth-child(2),
+        .footer-r dl:nth-child(3) {
+            margin-right: 100px; 
+        } */
+        .footer-r dd a {
+            line-height: 35px;
+            color: black;
+        }
+        .footer-r dt h2{
+            /* font-weight: normal; */
+            padding-bottom: 16px;
+        }
+        .footer-r dl {
+            width: 240px;
+        }
+        .footer-r dl:last-child {
+            width: auto;
+            margin-right: 50px;
+        }
+        .footer-r a:hover {
+            color: tomato;
+        }
+    </style>
+</head>
+<body>
+    <!-- 结构 -->
+    <!-- 页面头部分 -->
+    <header>
+        <nav>
+            <!-- logo部分 -->
+            <div class="logo">
+                <!-- <img src="img/logo2.png" alt=""> -->
+                <!-- <a href="#"><img src="img/h1.png" alt="" width="48px" height="42px"></a> -->
+            </div>
+            <!-- 导航栏部分 -->
+            <div class="navbar">
+                <ul>
+                    <li><a href="#">首页</a></li>
+                    <li><a href="#">课程</a></li>
+                    <li><a href="#">职业规划</a></li>
+                </ul>
+            </div>
+            <!-- 个人中心 -->
+            <div class="personal">
+                <a href="#">个人中心 <img src="img/h1.png" height="18" width="18" alt=""></a>
+                <a href="#"><img src="img/h1.png" height="18" width="18" alt="">辉夜姬</a>
+            </div>
+            <!-- 搜索框部分 -->
+            <div class="search">
+                <form action="">
+                    <input type="text" placeholder="请输入关键词">
+                    <!-- palceholder占位符，内容输入自动清除默认值 -->
+                    <input type="submit" value="">
+                </form>
+            </div>
+        </nav>
+    </header>
+
+    <!-- banner部分 -->
+    <div class="banner">
+        <div class="banner-in">
+            
+            <!-- 左侧导航栏 侧边栏 -->
+            <div class="slidebar">
+                <ul>
+                    <li><a href="#">前端开发 <span>></span></a></li>
+                    <li><a href="#">前端开发 <span>></span></a></li>
+                    <li><a href="#">前端开发 <span>></span></a></li>
+                    <li><a href="#">前端开发 <span>></span></a></li>
+                    <li><a href="#">前端开发 <span>></span></a></li>
+                    <li><a href="#">前端开发 <span>></span></a></li>
+                    <li><a href="#">前端开发 <span>></span></a></li>
+                    <li><a href="#">前端开发 <span>></span></a></li>
+                </ul>
+            </div>
+            
+            <!-- 小课表部分 -->
+            <dl class="timetable">
+                <dt><img src="img/h1.png" width="17px" height="17px"> 小课表</dt>
+                <dd>
+                    <h4>我爱学习</h4>
+                    <p>正在学习</p>
+                </dd>
+                <dd>
+                    <h4>我爱学习</h4>
+                    <p>正在学习</p>
+                </dd>
+                <dd>
+                    <h4>我爱学习</h4>
+                    <p>正在学习</p>
+                </dd>
+                <dd>
+                    <a href="#">全部课程</a>
+                </dd>
+            </dl>
+
+            <!-- 小圆点 -->
+            <ul class="circle">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+
+        </div>  <!-- 多类名使用 -->
+    </div>
+
+    <div class="recommend container"> <!-- 精品推荐 -->
+        <a href="#">精品推荐</a>
+        <a href="#">Jquery</a>
+        <a href="#">Spart</a>
+        <a href="#">Mysql</a>
+        <a href="#">javaWeb</a>
+        <a href="#">Mysql</a>
+        <a href="#">javaWeb</a>
+        <a href="#">修改兴趣</a>
+    </div>
+
+    <!-- 精品推荐大模块 -->
+    <div class="recom-products container clearfix">
+        <div class="recom-hd">  <!-- 精品推荐头部 -->
+            <h4>精品推荐</h4>
+            <a href="#">查看全部</a>
+        </div>
+        <div class="recom-bd">  <!-- 精品推荐主体 -->
+            <ul>
+                <li>
+                    <img src="img/h1.png" alt="">
+                    <div class="over"><img src="img/BF.jpg" alt="" width="224px" height="160px"/></div>
+                    <h5>Ihink PHP 5.0博客知识基础扎实训练</h5>
+                    <p><span>高级</span> · 1125人正在学习</p>
+                </li>
+                <li>
+                    <div class="over"><img src="img/BF.jpg" alt="" width="224px" height="160px"/></div>
+                    <h5>Ihink PHP 5.0博客知识基础扎实训练</h5>
+                    <p><span>高级</span> · 1125人正在学习</p>
+                </li>
+                <li>
+                    <div class="over"><img src="img/BF.jpg" alt="" width="224px" height="160px"/></div>
+                    <h5>Ihink PHP 5.0博客知识基础扎实训练</h5>
+                    <p><span>高级</span> · 1125人正在学习</p>
+                </li>
+                <li>
+                    <div class="over"><img src="img/BF.jpg" alt="" width="224px" height="160px"/></div>
+                    <h5>Ihink PHP 5.0博客知识基础扎实训练</h5>
+                    <p><span>高级</span> · 1125人正在学习</p>
+                </li>
+                <li>
+                    <div class="over"><img src="img/BF.jpg" alt="" width="224px" height="160px"/></div>
+                    <h5>Ihink PHP 5.0博客知识基础扎实训练</h5>
+                    <p><span>高级</span> · 1125人正在学习</p>
+                </li>
+                <li>
+                    <div class="over"><img src="img/BF.jpg" alt="" width="224px" height="160px"/></div>
+                    <h5>Ihink PHP 5.0博客知识基础扎实训练</h5>
+                    <p><span>高级</span> · 1125人正在学习</p>
+                </li>
+                <li>
+                    <div class="over"><img src="img/BF.jpg" alt="" width="224px" height="160px"/></div>
+                    <h5>Ihink PHP 5.0博客知识基础扎实训练</h5>
+                    <p><span>高级</span> · 1125人正在学习</p>
+                </li>
+                <li>
+                    <div class="over"><img src="img/BF.jpg" alt="" width="224px" height="160px"/></div>
+                    <h5>Ihink PHP 5.0博客知识基础扎实训练</h5>
+                    <p><span>高级</span> · 1125人正在学习</p>
+                </li>
+                <li>
+                    <div class="over"><img src="img/BF.jpg" alt="" width="224px" height="160px"/></div>
+                    <h5>Ihink PHP 5.0博客知识基础扎实训练</h5>
+                    <p><span>高级</span> · 1125人正在学习</p>
+                </li>
+                <li>
+                    <div class="over"><img src="img/BF.jpg" alt="" width="224px" height="160px"/></div>
+                    <h5>Ihink PHP 5.0博客知识基础扎实训练</h5>
+                    <p><span>高级</span> · 1125人正在学习</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 页面底部分 -->
+    <footer class="qwe">
+        <div class="footer-l">
+            <a href="#"><img src="img/logo1.png" alt=""></a>
+            <p>学成在线致力于普及中国最好的教育，它与中国一流大学和机构合作提供在线课程,<br><br>
+学成在线致力于普及中国最好的教育。</p>
+            
+            <a href="#">下载APP</a>
+        </div>
+        <div class="footer-r">
+            <dl>
+                <dt><h2>关于学成网1</h2></dt>
+                <dd><a href="#">关于</a></dd>
+                <dd><a href="#">管理团队</a></dd>
+                <dd><a href="#">工作机会</a></dd>
+                <dd><a href="#">客户服务</a></dd>
+                <dd><a href="#">帮助</a></dd>
+            </dl>
+            <dl>
+                <dt><h2>关于学成网1</h2></dt>
+                <dd><a href="#">关于</a></dd>
+                <dd><a href="#">管理团队</a></dd>
+                <dd><a href="#">工作机会</a></dd>
+                <dd><a href="#">客户服务</a></dd>
+                <dd><a href="#">帮助</a></dd>
+            </dl>
+            <dl>
+                <dt><h2>关于学成网1</h2></dt>
+                <dd><a href="#">关于</a></dd>
+                <dd><a href="#">管理团队</a></dd>
+                <dd><a href="#">工作机会</a></dd>
+                <dd><a href="#">客户服务</a></dd>
+                <dd><a href="#">帮助</a></dd>
+            </dl>
+        </div>
+    </footer>
+</body>
+</html>
